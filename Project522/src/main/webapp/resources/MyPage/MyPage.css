@@ -1,0 +1,179 @@
+@charset "UTF-8";
+#first{
+    margin-top: -230px !important;
+    height: 800px !important;
+    position: relative;
+    z-index: 2;
+    background-color: #FFF;
+    border-radius: 30px !important;
+}
+.row{
+    margin-top:45px;
+    height: 800px;
+}
+
+.col-sm-3{
+    border-right: 1px solid;
+    text-align: center;
+}
+.col-sm-9{
+    border: 0px solid;
+    height: 750px;
+}
+.rounded-circle{
+    text-align: center;
+}
+.col-sm-3 > h4{
+    margin: 23px;
+}
+.buttonHashTag{
+    margin-top: 22px;
+    font-family: 'Roboto', sans-serif;
+}
+/*왼쪽 리뷰 목록*/
+.user{
+    border-top: 0px solid;
+    margin-top:25px;
+    padding-bottom: 100px;
+    height: 300px;
+    font-family: 'Lato', sans-serif;
+}
+.user > div{
+  margin-top: 20px;
+}
+.user > div > button{
+  margin-left: 0px;
+  font-size :16px;
+}
+
+
+.Logout{
+    margin-top: 140px;
+    font-family: 'Lato', sans-serif;
+}
+.col-sm-9 > h1{
+    margin-top: 50px;
+    margin-left: 10px;
+}
+#second{
+    margin-top: 20px;
+    margin-left: 10px;
+    width: 475px;
+    height: 215px;
+}
+#review{
+    margin-top:0px;
+}
+/*bootstrap*/
+.alt-services .img-bg {
+    background-size: cover;
+    background-position: center center;
+    min-height: 400px;
+  }
+  
+  /*리뷰 글 작성*/
+  .alt-services h3 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-secondary);
+    margin-top: 46px;
+    margin-left: 46px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    position: relative;
+    font-family: 'Lato', sans-serif;
+    text-decoration: underline;
+  }
+  
+  .alt-services h3:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 50px;
+    height: 3px;
+    background: var(--color-primary);
+    left: 0;
+    bottom: 0;
+  }
+  
+  .alt-services .icon-box {
+    margin-top: 50px;
+  }
+  
+  .alt-services .icon-box i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    margin-right: 25px;
+    font-size: 28px;
+    width: 56px;
+    height: 56px;
+    border-radius: 4px;
+    line-height: 0;
+    box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.08);
+    background-color: #fff;
+    transition: 0.3s;
+  }
+  
+  .alt-services .icon-box:hover i {
+    background-color: var(--color-primary);
+    color: #fff;
+  }
+  
+  .alt-services .icon-box h4 {
+    font-weight: 700;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .alt-services .icon-box h4 a {
+    color: #000;
+    transition: 0.3s;
+  }
+  
+  .alt-services .icon-box h4 a:hover {
+    color: var(--color-primary);
+  }
+  
+  .alt-services .icon-box p {
+    line-height: 24px;
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    margin-bottom: 0;
+  }
+
+#review{
+    margin-left:20px;
+    border: solid 0px;
+}
+.review_page{
+  border: 0px solid;
+  width: 450px;
+  display: flex;
+  justify-content: space-between;
+}
+.delete_button{
+  border: 0px solid;
+  margin-right:10px;
+  width: 30px;
+  height: 50px;
+  margin-top: 32px;
+  font-family: 'Roboto', sans-serif;
+}
+#layoutMP{
+  position: absolute;
+  right: -20px;
+  top: 20px
+}
+
+.bg-dark{
+  position:relative;
+  z-index: 1;
+}
+.page-list{
+	position: absolute;
+	right: 500px;
+	top: 700px;
+}

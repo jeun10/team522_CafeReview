@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project522.mapper.CommunityMapper">
+	<select id="viewAll"
+		resultType="com.project522.domain.CommunityVO">
+		SELECT * FROM community
+	</select>
+	<resultMap id="communityResultMap"
+		type="com.project522.domain.CommunityVO">
+		<id property="community_num" column="COMMUNITY_NUM" />
+		<result property="community_category"
+			column="COMMUNITY_CATEGORY" />
+		<result property="community_title" column="COMMUNITY_TITLE" />
+		<result property="community_context" column="COMMUNITY_CONTEXT" />
+		<result property="community_date" column="COMMUNITY_DATE" />
+		<result property="community_map" column="COMMUNITY_MAP" />
+		<result property="community_place" column="COMMUNITY_PLACE" />
+		<result property="community_schedule"
+			column="COMMUNITY_SCHEDULE" />
+		<result property="user_id" column="USER_ID" />
+		<result property="nickname" column="NICKNAME" />
+		<association property="user_info"
+			javaType="com.project522.domain.UserInfoVO">
+			<result property="user_id" column="USER_ID" />
+			<result property="user_name" column="USER_NAME" />
+			<result property="user_pw" column="USER_PW" />
+			<result property="user_nickname" column="USER_NICKNAME" />
+			<result property="user_address" column="USER_ADDRESS" />
+		</association>
+	</resultMap>
+	<resultMap id="replyResultMap"
+		type="com.project522.domain.ReplyVO">
+		<id property="comment_num" column="COMMENT_NUM" />
+		<result property="community_num" column="COMMUNITY_NUM" />
+		<result property="comment_contents" column="COMMENT_CONTENTS" />
+		<result property="comment_date" column="COMMENT_DATE" />
+		<result property="comment_ori_number"
+			column="COMMENT_ORI_NUMBER" />
+		<result property="user_id" column="USER_ID" />
+		<association property="user_info"
+			javaType="com.project522.domain.UserInfoVO">
+			<result property="user_id" column="USER_ID" />
+			<result property="user_name" column="USER_NAME" />
+			<result property="user_pw" column="USER_PW" />
+			<result property="user_nickname" column="USER_NICKNAME" />
+			<result property="user_address" column="USER_ADDRESS" />
+		</association>
+	</resultMap>
+	<select id="getList" resultMap="communityResultMap">
+		SELECT
+		c.COMMUNITY_NUM,
+		c.COMMUNITY_CATEGORY,
+		c.COMMUNITY_TITLE,
+		c.COMMUNITY_CONTEXT,
+		c.COMMUNITY_DATE,
+		c.COMMUNITY_MAP,
+		c.COMMUNITY_PLACE,
+		c.COMMUNITY_SCHEDULE,
+		c.USER_ID,
+		u.USER_NAME,
+		u.USER_PW,
+		u.USER_NICKNAME,
+		u.USER_ADDRESS
+		FROM COMMUNITY c
+		JOIN USERINFO u ON c.USER_ID = u.USER_ID
+	</select>
+	<select id="getUser"
+		resultType="com.project522.domain.UserInfoVO">
+		SELECT
+		*
+		FROM userinfo
+		where user_id=#{user_id}
+	</select>
+
+	<select id="categoryList"
+		resultType="com.project522.domain.CommunityVO">
+		SELECT
+		community_num,community_category,community_title,community_date,community_map,user_id,community_place,community_schedule
+		FROM community
+		WHERE community_category=#{community_category}
+	</select>
+
+	<select id="getCommentList" resultMap="replyResultMap">
+		SELECT
+		r.COMMENT_NUM,
+		r.COMMUNITY_NUM,
+		r.COMMENT_CONTENTS,
+		r.COMMENT_DATE,
+		r.COMMENT_ORI_NUMBER,
+		r.USER_ID,
+		u.USER_NAME,
+		u.USER_PW,
+		u.USER_NICKNAME,
+		u.USER_ADDRESS
+		FROM REPLY r
+		JOIN USERINFO u ON r.USER_ID = u.USER_ID
+		WHERE
+		community_num
+		= #{community_num}
+	</select>
+
+	<select id="get" resultType="com.project522.domain.CommunityVO">
+		SELECT * FROM community WHERE
+		community_num = #{community_num}
+	</select>
+
+	<select id="getComment"
+		resultType="com.project522.domain.ReplyVO">
+		SELECT *
+		FROM REPLY
+		WHERE
+		comment_num
+		= #{comment_num}
+	</select>
+
+	<insert id="register"
+		parameterType="com.project522.domain.CommunityVO">
+		Insert into
+		community(community_num,community_category,community_title,
+		community_context, community_date, community_map, user_id,
+		community_place, community_schedule, nickname)
+		values(community_seq.nextval,
+		#{community_category}, #{community_title}, #{community_context},
+		to_char(sysdate, 'YYYY-MM-DD'), #{community_map},
+		#{user_id},#{community_place}, #{community_schedule}, #{nickname})
+	</insert>
+	<insert id="registerReply"
+		parameterType="com.project522.domain.ReplyVO">
+		INSERT INTO ADMIN.REPLY
+		(COMMENT_NUM, COMMUNITY_NUM,
+		COMMENT_CONTENTS, USER_ID, COMMENT_DATE,
+		COMMENT_ORI_NUMBER)
+		VALUES(reply_seq.nextval, #{community_num}, #{comment_contents},
+		#{user_id}, to_char(sysdate, 'YYYY-MM-DD'), #{comment_ori_number})
+	</insert>
+	<update id="modify"
+		parameterType="com.project522.domain.CommunityVO">
+		update community set
+		community_title=#{community_title},
+		community_category=#{community_category},
+		community_context=#{community_context},
+		community_map=#{community_map},
+		community_place=#{community_place},
+		community_schedule=#{community_schedule}
+		where
+		community_num=#{community_num}
+	</update>
+	<update id="modifyReply"
+		parameterType="com.project522.domain.ReplyVO">
+		UPDATE REPLY
+		SET COMMENT_CONTENTS=#{comment_contents}
+		where
+		comment_num=#{comment_num}
+	</update>
+	<delete id="remove"
+		parameterType="com.project522.domain.CommunityVO">
+		delete from community where
+		community_num=#{community_num}
+	</delete>
+	<delete id="removeReply"
+		parameterType="com.project522.domain.ReplyVO">
+		delete from REPLY where
+		comment_num=#{comment_num}
+	</delete>
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<choose>
+					<when test="type == 'T'.toString()">
+						<trim prefix="OR"><![CDATA[community_title like '%' || #{keyword} || '%' ]]></trim>
+					</when>
+					<when test="type == 'C'.toString()">
+						<trim prefix="OR"><![CDATA[community_context like '%' || #{keyword} || '%' ]]></trim>
+					</when>
+					<when test="type == 'W'.toString()">
+						<trim prefix="OR"><![CDATA[nickname like '%' || #{keyword} || '%' ]]></trim>
+					</when>
+					<when test="type == 'G'.toString()">
+						<trim prefix="OR"><![CDATA[community_category = #{keyword} ]]></trim>
+					</when>
+				</choose>
+			</foreach>
+		</trim>
+	</sql>
+	<sql id="criteria1">
+		<trim prefix="(" suffix=") " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<choose>
+					<when test="type == 'T'.toString()">
+						<trim prefix="OR"><![CDATA[community_title like '%' || #{keyword} || '%' ]]></trim>
+					</when>
+					<when test="type == 'C'.toString()">
+						<trim prefix="OR"><![CDATA[community_context like '%' || #{keyword} || '%' ]]></trim>
+					</when>
+					<when test="type == 'W'.toString()">
+						<trim prefix="OR"><![CDATA[nickname like '%' || #{keyword} || '%' ]]></trim>
+					</when>
+					<when test="type == 'G'.toString()">
+						<trim prefix="OR"><![CDATA[community_category = #{keyword} ]]></trim>
+					</when>
+				</choose>
+			</foreach>
+		</trim>
+	</sql>
+	<select id="getListWithPaging" resultMap="communityResultMap">
+  <![CDATA[
+  SELECT *
+  FROM (
+    SELECT
+      CD.*,
+      ROWNUM rn
+    FROM (
+      SELECT
+        c.COMMUNITY_NUM,
+        c.COMMUNITY_CATEGORY,
+        c.COMMUNITY_TITLE,
+        c.COMMUNITY_DATE,
+        c.COMMUNITY_MAP,
+        c.COMMUNITY_PLACE,
+        c.COMMUNITY_SCHEDULE,
+        c.USER_ID,
+        c.NICKNAME,
+        u.USER_NAME,
+        u.USER_PW,
+        u.USER_NICKNAME,
+        u.USER_ADDRESS
+      FROM COMMUNITY c
+      JOIN USERINFO u ON c.USER_ID = u.USER_ID]]>
+      <where>
+        <include refid="criteria1"/>
+      </where><![CDATA[
+      ORDER BY c.COMMUNITY_NUM DESC
+    ) CD
+    WHERE ROWNUM <= #{pageNum} * #{amount}
+  )
+  WHERE rn > (#{pageNum} - 1) * #{amount}
+  ]]>
+	</select>
+
+	<select id="getTotalCount" resultType="int">
+		select count(*) from community where
+		<include refid="criteria"></include>
+		community_num > 0
+	</select>
+</mapper>

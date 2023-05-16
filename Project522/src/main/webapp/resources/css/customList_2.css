@@ -1,0 +1,12 @@
+.btn-outline-dark:hover {
+  background-color: #442f1e !important;
+  color: #fff !important;
+} 
+.btn.btn-danger {
+  background-color: #d4bda5 !important;
+}
+.btn.btn-danger:hover {
+ background-color: #af9b87 !important;
+
+}
+

@@ -1,0 +1,58 @@
+
+/*리뷰 이미지 스와이퍼*/
+.swiper {
+	margin: 100px auto;
+	width: 320px;
+	height: 240px;
+}
+
+.swiper-slide {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 22px;
+	font-weight: bold;
+	color: #fff;
+	
+}
+
+.swiper-wrapper {
+	overflow: hidden;
+	
+}
+
+/*해쉬태그*/
+.hashtaglist ul {
+  padding: 5px 0px;
+  
+}
+
+.hashtaglist ul li {
+  display: inline-block;
+  margin: 0 5px;
+  font-size: 14px;
+  letter-spacing: -.5px;
+}
+.hashtaglist ul li.tag-item {
+  padding: 4px 8px;
+  background-color: #5f4f43;
+  color: #fff;
+  border-radius: 10px;
+}
+
+.hashtaglist .tag-item:hover {
+  background-color: #aaa39b;
+  color: #fff;
+}
+
+.hashtaglist .del-btn {
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+
+/*border round*/
+
+

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project522.mapper.ReviewMapper">
+	<!-- 리뷰 등록 -->
+	<insert id="insertReview"
+		parameterType="com.project522.domain.ReviewVO">
+		Insert into review(REVIEW_NUM,USER_ID, Review_SelectTag1,
+		Review_SelectTag2, Review_SelectTag3,
+		Review_HashTag, REVIEW_TITLE, REVIEW_CONTENT,Review_Image,REVIEW_CAFENAME,REVIEW_CAFEADDR)
+		values(review_seq.NEXTVAL,#{user_Id},#{review_SelectTag1}, #{review_SelectTag2},
+		#{review_SelectTag3},
+		#{review_HashTag},#{review_Title}, #{review_Content},#{review_Image},#{review_Cafename},#{review_Cafeaddr})
+		<selectKey keyProperty="review_Num" resultType="Integer" order="AFTER">
+			SELECT review_seq.currval FROM dual
+		</selectKey>
+	</insert>
+	
+	<!-- 태그1 가져오기 -->
+	<select id="getReviewTag1"
+		resultType="com.project522.domain.TagVO">
+		Select tag_Content from tag where tag_Category=1
+	</select>
+	<!-- 태그2 가져오기 -->
+	<select id="getReviewTag2"
+		resultType="com.project522.domain.TagVO">
+		Select tag_Content from tag where tag_Category=2
+	</select>	
+	<!-- 태그3 가져오기 -->
+	<select id="getReviewTag3"
+		resultType="com.project522.domain.TagVO">
+		Select tag_Content from tag where tag_Category=3
+	</select>	
+
+	<!-- 카페 이름 가져오기 중복 주소 이름 제거 -->
+	<select id="getReviewList" resultType="com.project522.domain.ReviewVO">
+	  SELECT DISTINCT REVIEW_CAFENAME, REVIEW_CAFEADDR FROM review
+	</select>
+	
+	<!-- 카페 이름만 TAG1 중복 제거 -->
+	<select id="getDistinctList1" resultType="com.project522.domain.ReviewVO">
+	  SELECT DISTINCT REVIEW_CAFENAME ,REVIEW_SELECTTAG1 FROM review
+	</select> 
+	
+	<!-- 카페 이름만 TAG2 중복 제거 -->
+	<select id="getDistinctList2" resultType="com.project522.domain.ReviewVO">
+	  SELECT DISTINCT REVIEW_CAFENAME ,REVIEW_SELECTTAG2 FROM review
+	</select> 
+	
+	<!-- 카페 이름만 TAG3 중복 제거 -->
+	<select id="getDistinctList3" resultType="com.project522.domain.ReviewVO">
+	  SELECT DISTINCT REVIEW_CAFENAME ,REVIEW_SELECTTAG3 FROM review
+	</select> 
+	
+	
+	
+
+  <!-- 해쉬태그 검색 리스트 페이징 추가 -->
+   <select id="getHashListWithPaging" resultType="com.project522.domain.ReviewVO">
+      <![CDATA[
+      select * from
+      (
+         select /*+INDEX_DESC(review review_pk)*/
+         rownum rn, REVIEW_NUM, user_nickname, Review_SelectTag1, Review_SelectTag2, Review_SelectTag3,Review_HashTag, REVIEW_TITLE, REVIEW_CONTENT,Review_Image,REVIEW_DATE,REVIEW_CAFENAME,REVIEW_CAFEADDR
+         from review r
+                inner join userinfo u on u.user_id = r.user_id
+         where rownum <= #{pageNum} * #{amount}
+         AND REVIEW_HASHTAG like '%'||#{review_Hashtag}||'%'
+      )
+      where rn > (#{pageNum}-1) * #{amount}
+      ]]>
+   </select>
+	
+
+   <!-- 리뷰 리스트 페이징 추가 -->
+   <select id="getReviewListWithPaging" resultType="com.project522.domain.ReviewVO">
+      <![CDATA[
+      select * from
+      (
+         select /*+INDEX_DESC(review review_pk)*/
+         rownum rn, REVIEW_NUM, user_nickname, REVIEW_TITLE, REVIEW_DATE,REVIEW_CAFENAME,REVIEW_CAFEADDR,review_SelectTag1,review_SelectTag2
+         from review r
+                inner join userinfo u on u.user_id = r.user_id
+
+         where rownum <= #{pageNum} * #{amount}
+         AND REVIEW_CAFENAME = #{review_Cafename}
+      )
+      where rn > (#{pageNum}-1) * #{amount}
+      ]]>
+   </select>
+
+	
+	
+	<!-- 입력된 카페 이름으로 중복 제거 리스트 가져오기 -->
+	<select id="getDistinctByCafename" resultType="com.project522.domain.ReviewVO">
+  		SELECT DISTINCT REVIEW_CAFENAME, REVIEW_CAFEADDR FROM review WHERE REVIEW_CAFENAME LIKE '%' || #{review_Cafename} || '%'
+	</select>
+	
+	<!-- 리뷰 리스트 가져오기 -->
+	<select id="getReviewListByCafename" resultType="com.project522.domain.ReviewVO">
+	  SELECT * FROM review WHERE REVIEW_CAFENAME = #{review_Cafename}
+	</select>
+	
+	<!-- 카페별 리뷰 개수 가져오기 -->
+	<select id="getReviewCount" resultType="int">
+		select count(*) from review where review_Num>0 AND REVIEW_CAFENAME = #{review_Cafename}
+	</select>
+	<!-- 해시태그별 리뷰 개수 가져오기 -->
+   <select id="getHashCount" resultType="int">
+      select count(*) from review where review_Num>0 AND REVIEW_HASHTAG like '%'||#{review_Hashtag}||'%'
+   </select>
+	
+	
+	<!-- 리뷰 상세 내용 가져오기 -->
+	<select id="get" resultType="com.project522.domain.ReviewVO">
+		Select * from review where review_Num = #{review_Num}
+	</select>
+	
+	<delete id="deleteReview">
+		delete from review where review_Num = #{review_Num}
+	</delete>
+	
+	   <!-- 리뷰 상세 내용 닉네임 가져오기 -->
+   <select id="getReviewNickname" resultType="String">
+      select user_nickname 
+      from USERINFO u, REVIEW r
+      where u.user_id = r.user_id and r.review_num = #{review_Num}
+   </select>
+	
+	
+	<update id="modifyReview" parameterType="com.project522.domain.ReviewVO">
+		update review set
+		Review_SelectTag1=#{review_SelectTag1},
+		Review_SelectTag2=#{review_SelectTag2},
+		Review_SelectTag3=#{review_SelectTag3},
+		Review_HashTag=#{review_HashTag},
+		REVIEW_TITLE=#{review_Title},
+		REVIEW_CONTENT=#{review_Content}
+		where review_Num=#{review_Num}
+	</update>
+	
+	<update id="modifyReview_img" parameterType="com.project522.domain.ReviewVO">
+		update review set
+		Review_SelectTag1=#{review_SelectTag1},
+		Review_SelectTag2=#{review_SelectTag2},
+		Review_SelectTag3=#{review_SelectTag3},
+		Review_HashTag=#{review_HashTag},
+		REVIEW_TITLE=#{review_Title},
+		REVIEW_CONTENT=#{review_Content},
+		REVIEW_IMAGE=#{review_Image}
+		where review_Num=#{review_Num}
+	</update>
+	
+	<!-- 전체 review 조회(추가 2023.04.19)-->
+	<select id="getAllReview" resultType="com.project522.domain.ReviewVO">
+		select * from review where review_Num>0
+	</select>
+</mapper>

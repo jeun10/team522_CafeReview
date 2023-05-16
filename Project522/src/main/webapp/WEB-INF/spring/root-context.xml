@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		
+	<bean class = "com.project522.domain.UserVO" id ='loginUserVO' scope ='session'/>
+		
+		
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName"
+			value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url"
+			value="jdbc:oracle:thin:@project522_high?TNS_ADMIN=C:/DEV/backend_project/Wallet_Project522/" />
+		<property name="username" value="ADMIN" />
+		<property name="password" value="Multicampus522" />
+	</bean>
+
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean"
+		id="SqlSessionFactory">
+		<property name="dataSource" ref="dataSource" />
+		<!-- classpath: 위치에 mybatis-config파일을 만들어줘야함 -->
+		<property value="classpath:mybatis-config.xml"
+			name="configLocation" />
+		<!-- classpath: 위치에 Mapper파일을 만들어줘야함 -->
+		<property value="classpath:Project522Mapper.xml"
+			name="mapperLocations" />
+
+	</bean>
+	
+
+	<!-- 이 부분에서 에러가 발생하는건 정상임 -->
+	<mybatis-spring:scan
+		base-package="com.project522.mapper" />
+	<context:component-scan
+		base-package="com.project522.service"></context:component-scan>
+</beans>

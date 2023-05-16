@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project522.mapper.MPCMapper">
+	<!-- MyPage Community 조회 -->
+<!-- 	<select id="getMPC" resultType="com.project522.domain.MPCVO">
+		select community_context from community	
+	</select> -->
+	
+	<select id="getMPC" resultType="com.project522.domain.MPCVO">
+		select * from community where community_num>0
+	</select>
+	
+	<select id="MPCList" resultType="com.project522.domain.MPCVO">
+		select * from community
+	</select>
+	<!-- session -->
+<!-- 	<select id="getMPCList"
+		resultType="com.project522.domain.MPCVO">
+		select * from community
+		where user_id = #{user_id}
+	</select> -->
+	<!-- 페이징 -->
+<!-- 	<select id="getListWithPaging" resultType ="com.project522.domain.MPCVO">
+		<![CDATA[
+			SELECT community_num, community_title, community_date, user_id
+			FROM (
+			  SELECT rownum rn, community_num, community_title, community_date, user_id
+			  FROM community 
+			  WHERE rownum <= #{pageNum} * #{amount} AND user_id = ${user_id}
+			)
+			WHERE rn > (#{pageNum} -1) * #{amount}
+   		]]>
+	</select> -->
+	<select id="getListWithPaging" resultType ="com.project522.domain.MPCVO">
+	<![CDATA[
+		SELECT community_num, community_title, community_date, user_id
+		FROM (
+		  SELECT rownum rn, community_num, community_title, community_date, user_id
+		  FROM community 
+		  WHERE rownum <= #{pageNum} * #{amount} AND user_id = #{user_id}
+		)
+		WHERE rn > (#{pageNum} -1) * #{amount}
+    ]]>
+</select>
+	<select id="getTotalCount" resultType="int">
+		select count(*) from community where
+		user_id = #{user_id}
+	</select>
+	<!-- review -->
+		<select id="ReviewgetPage" resultType ="com.project522.domain.ReviewVO">
+	<![CDATA[
+		SELECT review_num, review_title, review_date, user_id
+		FROM (
+		  SELECT rownum rn, review_num, review_title, review_date, user_id
+		  FROM review
+		  WHERE rownum <= #{pageNum} * #{amount} AND user_id = #{user_id}
+		)
+		WHERE rn > (#{pageNum} -1) * #{amount}
+    ]]>
+	</select>
+	<select id="ReviewTotalCount" resultType="int">
+		select count(*) from review where
+		user_id = #{user_id}
+	</select>
+	
+	<!-- reply -->
+	<select id="ReplygetPage" resultType ="com.project522.domain.ReplyVO">
+	<![CDATA[
+		SELECT comment_num, comment_contents, comment_date, user_id
+		FROM (
+		  SELECT rownum rn, comment_num, comment_contents, comment_date, user_id
+		  FROM reply
+		  WHERE rownum <= #{pageNum} * #{amount} AND user_id = #{user_id}
+		)
+		WHERE rn > (#{pageNum} -1) * #{amount}
+    ]]>
+	</select>
+	<select id="ReplyTotalCount" resultType="int">
+		select count(*) from reply where
+		user_id = #{user_id}
+	</select>
+	
+</mapper>
