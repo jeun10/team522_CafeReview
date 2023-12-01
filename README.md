@@ -3,7 +3,7 @@
 
 <div align=center> 
   <h3> 멀티캠퍼스 팀프로젝트</h3>
-  <h4> 23.03.29 ~ 23.04.09 </h4><br>
+  <h4> 23.03.29 ~ 23.05.09 </h4><br>
   <img src="https://github.com/jeun10/team522_CafeReview/assets/57583966/00467160-ee1b-4fe7-a268-5b0595efdca1"><br>
   <img src="https://github.com/jeun10/team522_CafeReview/assets/57583966/53da7def-2f67-4501-a8a3-36d4fe3a2d71"><br>
   <br>
